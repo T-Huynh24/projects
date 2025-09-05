@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pokédex Portfolio</title>
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    background: #f0f8ff;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  h1 {
+    color: #d32f2f;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 2px #555;
+  }
+  .pokedex {
+    display: grid;
+    grid-template-columns: repeat(3, 150px);
+    gap: 20px;
+  }
+  .entry {
+    background: #fff;
+    border: 4px solid #d32f2f;
+    border-radius: 15px;
+    width: 150px;
+    height: 200px;
+    cursor: pointer;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+    transition: transform 0.2s ease;
+    position: relative;
+  }
+  .entry:hover {
+    transform: scale(1.05);
+  }
+  .entry-header {
+    font-weight: bold;
+    color: #d32f2f;
+    text-align: center;
+  }
+  .entry-img {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .entry-img img {
+    max-width: 100px;
+    max-height: 100px;
+  }
+  .entry-footer {
+    text-align: center;
+    font-size: 0.9em;
+    color: #555;
+  }
+  /* Popup styles */
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+  }
+  .popup-content {
+    background: white;
+    border-radius: 15px;
+    width: 300px;
+    padding: 20px;
+    position: relative;
+    box-shadow: 0 0 20px #d32f2f;
+  }
+  .popup-content h2 {
+    margin-top: 0;
+    color: #d32f2f;
+  }
+  .popup-content p {
+    font-size: 1em;
+    color: #333;
+  }
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: #d32f2f;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2em;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 30px;
+    height: 30px;
+  }
+</style>
+</head>
+<body>
+  <h1>My Pokédex Portfolio</h1>
+  <div class="pokedex" id="pokedex">
+    <!-- Entries will go here -->
+  </div>
+
+  <div class="popup-overlay" id="popup">
+    <div class="popup-content">
+      <button class="close-btn" id="closePopup">&times;</button>
+      <h2 id="projectTitle">Project Title</h2>
+      <p id="projectDescription">Project description goes here.</p>
+      <a href="#" target="_blank" id="projectLink">View Project</a>
+    </div>
+  </div>
+
+<script>
+  // Example projects
+  const projects = [
+    {
+      title: 'Project One',
+      description: 'This is the first project description.',
+      image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png', // Pikachu image
+      link: 'https://example.com/project1'
+    },
+    {
+      title: 'Project Two',
+      description: 'This is the second project description.',
+      image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png', // Bulbasaur
+      link: 'https://example.com/project2'
+    },
+    {
+      title: 'Project Three',
+      description: 'This is the third project description.',
+      image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png', // Charmander
+      link: 'https://example.com/project3'
+    },
+    {
+      title: 'Project Four',
+      description: 'This is the fourth project description.',
+      image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png', // Squirtle
+      link: 'https://example.com/project4'
+    },
+    {
+      title: 'Project Five',
+      description: 'This is the fifth project description.',
+      image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/133.png', // Eevee
+      link: 'https://example.com/project5'
+    },
+    {
+      title: 'Project Six',
+      description: 'This is the sixth project description.',
+      image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png', // Mewtwo
+      link: 'https://example.com/project6'
+    }
+  ];
+
+  const pokedex = document.getElementById('pokedex');
+  const popup = document.getElementById('popup');
+  const projectTitle = document.getElementById('projectTitle');
+  const projectDescription = document.getElementById('projectDescription');
+  const projectLink = document.getElementById('projectLink');
+  const closePopup = document.getElementById('closePopup');
+
+  // Create entries
+  projects.forEach((project, index) => {
+    const entry = document.createElement('div');
+    entry.classList.add('entry');
+    entry.innerHTML = `
+      <div class="entry-header">#${index + 1}</div>
+      <div class="entry-img"><img src="${project.image}" alt="${project.title}"/></div>
+      <div class="entry-footer">${project.title}</div>
+    `;
+
+    entry.addEventListener('click', () => {
+      projectTitle.textContent = project.title;
+      projectDescription.textContent = project.description;
+      projectLink.href = project.link;
+      popup.style.display = 'flex';
+    });
+
+    pokedex.appendChild(entry);
+  });
+
+  closePopup.addEventListener('click', () => {
+    popup.style.display = 'none';
+  });
+
+  // Close popup when clicking outside content
+  popup.addEventListener('click', (e) => {
+    if(e.target === popup) {
+      popup.style.display = 'none';
+    }
+  });
+</script>
+</body>
+</html>
