@@ -1,0 +1,6 @@
+"dependencies": {
+  "next": "13.x or 14.x", // version number depends
+  "react": "...",
+  "react-dom": "..."
+}
+
